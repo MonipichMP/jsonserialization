@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:network_request/model/person.dart';
 import 'package:network_request/services/person_network_service.dart';
 
+import '../model/person.dart';
+
 class HomeScreen extends StatelessWidget {
   final PersonNetworkService personService = PersonNetworkService();
 
@@ -28,20 +30,22 @@ class HomeScreen extends StatelessWidget {
                         child: Card(
                           color: Colors.black.withOpacity(0.5),
                           child: ListView.builder(
-                              itemCount: snapshot.data.length,
+                              itemCount: snapshot.data!.length,
                               itemBuilder: (BuildContext context, int index) {
-                                var currentPerson = snapshot.data[index];
+                                var currentPerson = snapshot.data![index];
+                                var name = "${currentPerson.name?.title} ${currentPerson.name?.last} ${currentPerson.name?.first}" ?? "";
 
                                 return ListTile(
-                                  title: Text(currentPerson.name),
+                                  title: Text(name),
                                   leading: CircleAvatar(
                                     backgroundImage:
-                                        NetworkImage(currentPerson.imageUrl),
+                                        NetworkImage(currentPerson.picture?.thumbnail ?? ""),
                                   ),
                                   subtitle: Text(
-                                      "Phone: ${currentPerson.phoneNumber}"),
+                                      "Phone: ${currentPerson.phone}"),
                                 );
-                              }),
+                              },
+                          ),
                         ),
                       ),
                     ),
